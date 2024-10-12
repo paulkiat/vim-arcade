@@ -1,0 +1,21 @@
+# configs/config.yaml
+
+link_layer:
+  interface: "eth0"             # Network interface to configure.
+  mtu: 1500                      # Desired MTU value.
+  vlan:
+    enabled: true
+    vlan_id: 10                  # VLAN ID for tagging.
+  security:
+    macsec:
+      enabled: true
+      cipher_suite: "GCM-AES-128" # Supported cipher suites: "GCM-AES-128", "GCM-AES-256"
+      key: "your-macsec-key-here"  # Replace with a secure key.
+    dot1x:
+      enabled: true
+      username: "admin"
+      password: "securepassword"
+      eap_method: "PEAP"           # Supported EAP methods: "PEAP", "EAP-TLS", etc.
+  sdn:
+    enabled: true
+    controller_url: "http://sdn-controller:8080/api" # URL of the SDN controller.
