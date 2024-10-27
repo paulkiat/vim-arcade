@@ -1,0 +1,157 @@
+// Client-side code (index.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vim Dune Arcade MVP</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        #instructions {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="instructions">
+        Use WASD to move, SPACE to jump
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        let scene, camera, renderer, player, playerMesh;
+        const otherPlayers = {};
+        const gridSize = 10;
+        let jumping = false;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Create grid
+            const gridHelper = new THREE.GridHelper(gridSize, gridSize);
+            scene.add(gridHelper);
+
+            // Create player
+            const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            playerMesh = new THREE.Mesh(geometry, material);
+            scene.add(playerMesh);
+
+            camera.position.set(0, 5, 5);
+            camera.lookAt(0, 0, 0);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+
+            if (player) {
+                playerMesh.position.set(player.x, player.y, player.z);
+                camera.position.set(player.x, player.y + 5, player.z + 5);
+                camera.lookAt(player.x, player.y, player.z);
+            }
+        }
+
+        function handleKeyDown(event) {
+            if (!player) return;
+
+            const key = event.key.toLowerCase();
+            let moved = false;
+
+            if (key === 'w' && player.z > -gridSize/2) { player.z -= 0.5; moved = true; }
+            if (key === 's' && player.z < gridSize/2) { player.z += 0.5; moved = true; }
+            if (key === 'a' && player.x > -gridSize/2) { player.x -= 0.5; moved = true; }
+            if (key === 'd' && player.x < gridSize/2) { player.x += 0.5; moved = true; }
+            if (key === ' ' && !jumping) {
+                jumping = true;
+                const jumpHeight = 1;
+                const jumpDuration = 500; // ms
+
+                const startY = player.y;
+                const jumpUp = () => {
+                    if (player.y < startY + jumpHeight) {
+                        player.y += 0.1;
+                        moved = true;
+                        requestAnimationFrame(jumpUp);
+                    } else {
+                        setTimeout(jumpDown, jumpDuration / 2);
+                    }
+                };
+                const jumpDown = () => {
+                    if (player.y > startY) {
+                        player.y -= 0.1;
+                        moved = true;
+                        requestAnimationFrame(jumpDown);
+                    } else {
+                        player.y = startY;
+                        jumping = false;
+                    }
+                };
+                jumpUp();
+            }
+
+            if (moved) {
+                socket.emit('move', { x: player.x, y: player.y, z: player.z });
+            }
+        }
+
+        socket.on('initGame', (initialPlayer) => {
+            player = initialPlayer;
+            init();
+        });
+
+        socket.on('players', (serverPlayers) => {
+            Object.keys(serverPlayers).forEach(id => {
+                if (id !== socket.id && !otherPlayers[id]) {
+                    const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+                    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+                    const mesh = new THREE.Mesh(geometry, material);
+                    scene.add(mesh);
+                    otherPlayers[id] = { mesh, ...serverPlayers[id] };
+                }
+            });
+        });
+
+        socket.on('newPlayer', (newPlayer) => {
+            const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+            const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+            otherPlayers[newPlayer.id] = { mesh, ...newPlayer };
+        });
+
+        socket.on('playerMoved', (movedPlayer) => {
+            if (otherPlayers[movedPlayer.id]) {
+                Object.assign(otherPlayers[movedPlayer.id], movedPlayer);
+            }
+        });
+
+        socket.on('playerDisconnected', (id) => {
+            if (otherPlayers[id]) {
+                scene.remove(otherPlayers[id].mesh);
+                delete otherPlayers[id];
+            }
+        });
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

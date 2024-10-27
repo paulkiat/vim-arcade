@@ -10,3 +10,14 @@ out
 # already existing elements were commented out
 
 #/target
+
+docs
+data
+llm-core
+llm-chain
+llm-chain-
+package-lock.json
+.*workspace
+*DS_store
+.venv
+./node_modules

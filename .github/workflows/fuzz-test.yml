@@ -1,0 +1,19 @@
+# .github/workflows/fuzz-test.yml
+name: Fuzz Test
+
+on: [push, pull_request]
+
+jobs:
+  fuzz-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.x'
+    - name: Install Dependencies
+      run: npm install
+    - name: Run Fuzz Test with zlib and zstd
+      run: node server/fuzzTest.js

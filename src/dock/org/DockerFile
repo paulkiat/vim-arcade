@@ -1,0 +1,8 @@
+FROM node:20.4.0-bullseye-slim
+COPY src/hub/org/package.json /customer
+RUN apt-get -y update; apt-get -y install curl libzmq3-dev openssl
+COPY src/hub/web /usr/src/org
+WORKDIR /usr/src/org
+COPY src/hub/org/package.json /customer
+RUN npm i
+CMD gs-app-server

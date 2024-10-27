@@ -1,0 +1,228 @@
+/* Import common styles */
+@import url('./lib/common.css');
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  #history {
+    color: #eee !important;
+    background-color: #222 !important;
+  }
+
+  #hlog .you {
+    color: #aaa !important;
+    font-style: italic;
+  }
+}
+
+/* Reset and base styles */
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  z-index: 0;
+}
+
+button.selected {
+  background-color: #0066cc;
+  color: white !important;
+}
+
+textarea {
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.hpad {
+  flex-grow: 1;
+}
+
+/* Header Styles */
+#app-banner {
+  background-image: url('./img/app-banner.jpg');
+  height: 4.375rem; /* 70px equivalent */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0.625rem; /* 10px equivalent */
+  z-index: 1;
+}
+
+#username {
+  text-align: center;
+}
+
+/* App Container */
+#app-frame {
+  flex-grow: 1;
+  border-radius: 0.625rem; /* 10px equivalent */
+  background-color: #eee;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+#app-frame-head {
+  display: flex;
+  align-items: center;
+  border-radius: 0.3em 0 0 0;
+  z-index: 2;
+}
+
+#app-frame-head-toggle,
+#app-frame-head-icon {
+  margin: 0.375rem 0;
+  height: 2em;
+  line-height: 2em;
+  border-radius: 0.625rem; /* 10px equivalent */
+  border-bottom: thin solid #888;
+  cursor: pointer;
+  background-color: white;
+  text-align: center;
+  z-index: 3;
+}
+
+/* Horizontal Rule within App */
+#app-frame hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 1rem 0;
+}
+
+#file-select {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+#file-select + button {
+  cursor: pointer;
+}
+
+#file-drop {
+  margin: 0.5rem 0 1rem 0;
+  padding: 1.25rem;
+  background-color: #f9f9f9;
+  border: 1px dashed #888;
+  border-radius: 0.625rem; /* 10px equivalent */
+  font-size: 1.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#file-drop:hover {
+  background-color: #e0e0e0;
+  border: 1px solid #e3b70a;
+}
+
+#file-drop.drop-hover {
+  background-image: url('./img/app-banner.jpg');
+  color: white;
+  opacity: 0.25;
+  font-weight: bold;
+}
+
+/* Parts Container */
+#parts {
+  display: grid;
+  grid-template-columns: 1fr 0.625rem 2fr; /* Adjusted grid gaps */
+  align-items: flex-start;
+  flex-grow: 1;
+  gap: 1rem;
+}
+
+/* Q&A Section */
+#qna {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 6.25rem; /* 100px equivalent */
+  gap: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+#qna label {
+  padding-right: 0.625rem; /* 10px equivalent */
+  text-align: right;
+}
+
+#query,
+#history {
+  resize: none;
+  border-radius: 0.625rem; /* 10px equivalent */
+  border: 1px solid #aaa;
+  background-color: white;
+}
+
+#history {
+  height: calc(100% - 1.25rem);
+  color: black;
+  padding: 0.5rem;
+}
+
+#hwrap {
+  position: absolute;
+  top: 0.3125rem; /* 5px equivalent */
+  left: 0.3125rem;
+  right: 0.3125rem;
+  bottom: 0.3125rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+#hlog {
+  display: grid;
+  grid-template-columns: 3.125rem 1fr; /* 50px equivalent */
+  flex-direction: column;
+}
+
+#hlog .text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 0.625rem; /* 10px equivalent */
+}
+
+#hlog .text p,
+#hlog .text pre {
+  margin: 0;
+}
+
+#hlog .you {
+  color: #777 !important;
+  font-style: italic;
+  text-align: right;
+}
+
+#hlog .ai {
+  padding-bottom: 0.625rem; /* 10px equivalent */
+}
+
+#query {
+  height: calc(100% - 0.3125rem);
+}
+
+/* File List Section */
+#app-frame-docs {
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}

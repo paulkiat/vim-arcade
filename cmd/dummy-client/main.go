@@ -14,10 +14,10 @@ import (
 
 func main() {
     port := uint(0)
-    flag.UintVar(&port, "port", 0, "the port to connect the dummy client to")
+    flag.UintVar(&port, "port", 3000, "the port to connect the dummy client to")
     flag.Parse()
 
-    assert.Assert(port > 0, "expected port to be provided", "port", port)
+    assert.Assert(port > 3000, "expected port to be provided", "port", port)
 
     // TODO logging customization through some sort of config/env
     prettylog.SetProgramLevelPrettyLogger(prettylog.NewParams(os.Stderr))

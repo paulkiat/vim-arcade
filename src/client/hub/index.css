@@ -1,0 +1,56 @@
+@import url('./lib/common.css');
+
+@media (prefers-color-scheme: dark) {
+  .data.connected {
+    color: #8e8 !important;
+  }
+}
+/* Header Styles */
+#header {
+    background-image: url('./img/red-blue-banner.jpg');
+}
+
+#hub {
+    flex-grow: 1;
+    border-radius: 10px;
+    background-color: #eee;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#hub hr {
+    width: 100%;
+}
+
+#org-create {
+    flex-direction: row;
+    align-items: center;
+}
+
+#org-list {
+    grid-template-columns: 3fr 2fr 3fr 1fr 1fr 2fr 1fr;
+}
+
+#org-edit {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+#show-logs {
+  display: flex;
+  flex-direction: column;
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 1.5px;
+  padding: 10px 0;
+  height: calc(18px * 20 + 20px);
+  width: calc(12px * 80 + 20px);
+  overflow: scroll;
+  white-space: nowrap;
+}
+
+.data.connected {
+  color: #080;
+}

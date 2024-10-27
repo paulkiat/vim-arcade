@@ -1,0 +1,39 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "node": "20.18.0",
+    "dayjs": "1.11.7",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "ws": "^8.15.1",
+    "zeromq": "6.0.8",
+    "zlib": "^1.0.5",
+    "zlib-sync": "^1.0.0",
+    "zlib-sync-min": "^1.0.0",
+    "zlib-min": "^1.0.0",
+    "zlib-min-sync": "^1.0.0",
+    "zlib-max": "^1.0.0",
+    "zlib-max-sync": "^1.0.0",
+    "zlib-raw": "^1.0.0",
+    "zlib-raw-min": "^1.0.0",
+    "zlib-raw-max": "^1.0.0",
+    "zlib-raw-min-sync": "^1.0.0",
+    "zlib-raw-max-sync": "^1.0.0",
+    "zlib-raw-min-max": "^1.0.0",
+    "zlib-raw-min-max-sync": "^1.0.0"
+  },
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
